@@ -32,7 +32,10 @@ services:
     restart: unless-stopped
 
   jenkins:
-    image: jenkins/jenkins:lts-jdk21
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
+    image: devops-esprit-jenkins:python
     ports:
       - "8080:8080"
       - "50000:50000"
