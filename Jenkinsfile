@@ -32,17 +32,26 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                script {
-                    def scannerHome = tool 'SonarScanner'
+stage('SonarQube Analysis') {
+    steps {
+        script {
+            def scannerHome = tool 'SonarScanner'
 
-                    withSonarQubeEnv('SonarQube') {
-                        sh "\"${scannerHome}/bin/sonar-scanner\""
-                    }
-                }
+            withSonarQubeEnv('SonarQube') {
+                sh """
+                    "${scannerHome}/bin/sonar-scanner" \
+                    -Dsonar.projectKey=devops-esprit \
+                    -Dsonar.projectName="DevOps ESPRIT" \
+                    -Dsonar.sources=app \
+                    -Dsonar.tests=app \
+                    '-Dsonar.test.inclusions=app/test_*.py' \
+                    '-Dsonar.exclusions=app/test_*.py' \
+                    -Dsonar.sourceEncoding=UTF-8
+                """
             }
         }
+    }
+}
     }
 
     post {
